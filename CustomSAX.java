@@ -17,12 +17,12 @@
  import org.xml.sax.helpers.DefaultHandler;
 
 
-public class MySAX extends DefaultHandler {
+public class CustomSAX extends DefaultHandler {
 	public static void main(String args[]) throws Exception {
 		// Create SAX parser instance
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
-		MySAX handler = new MySAX();
+		CustomSAX handler = new CustomSAX();
 
 		// Parse each file provided on the command line
 		for (String fileName : args) {
@@ -31,7 +31,7 @@ public class MySAX extends DefaultHandler {
 		}
 	}
 
-	public MySAX() {
+	public CustomSAX() {
 		super();
 	}
 

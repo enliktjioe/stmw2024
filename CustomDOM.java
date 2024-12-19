@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ErrorHandler;
 
-class MyDOM {
+class CustomDOM {
 
     static final String columnSeparator = "|*|";
     static DocumentBuilder builder;
