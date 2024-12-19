@@ -153,3 +153,22 @@ Let's break down the key components:
 
 
 
+
+
+
+
+## References
+
+- How to use `dos2unix` in Windows
+  https://unix.stackexchange.com/questions/721844/linux-bash-shell-script-error-cannot-execute-required-file-not-found
+
+  - Convert using this command:
+    ```shell
+    dos2unix ./<shell_file_name>.sh
+    ```
+
+  - Example usage:
+    ![image-20241219205315931](img/README/image-20241219205315931.png)
+
+- 
+

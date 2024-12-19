@@ -1,19 +1,24 @@
 #!/bin/bash
+# echo "test"
 
-# Run the drop.sql batch file to drop existing tables.
-# Inside the drop.sql, you should check whether the table exists. Drop them ONLY if they exist.
-mysql < drop.sql
+# # Run the drop.sql batch file to drop existing tables.
+# # Inside the drop.sql, you should check whether the table exists. Drop them ONLY if they exist.
+# mysql < drop.sql
 
-# Run the create.sql batch file to create the database (if it does not exist) and the tables.
-mysql < create.sql
+# # Run the create.sql batch file to create the database (if it does not exist) and the tables.
+# mysql < create.sql
 
 # Compile and run the convertor
-javac CustomSAX.java
-java CustomSAX ../ebay-data/ output/
+javac XMLToCSV.java
+java XMLToCSV
 
-# Run the load.sql batch file to load the data
-mysql ad < load.sql
+# TODO
+# using batch
+# java MySAX ../ebay-data/ output/
 
-# Remove all temporary files
-rm ...
-...
+# # Run the load.sql batch file to load the data
+# mysql ad < load.sql
+
+# # Remove all temporary files
+# rm ...
+# ...
