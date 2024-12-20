@@ -99,7 +99,7 @@ There are no multi-valued dependencies for all five columns
 
 
 
-## References
+## Troubleshooting
 
 - How to use `dos2unix` in Windows
   https://unix.stackexchange.com/questions/721844/linux-bash-shell-script-error-cannot-execute-required-file-not-found
@@ -120,4 +120,28 @@ There are no multi-valued dependencies for all five columns
   - Example:
     ![image-20241219232604865](img/README/image-20241219232604865.png)
   - Source: https://forum.hestiacp.com/t/error-2002-hy000-cant-connect-to-local-mysql-server-through-socket-run-mysqld-mysqld-sock-2/10239
+
+- MySQL - [ERROR: Loading local data is disabled - this must be enabled on both the client and server sides](https://stackoverflow.com/questions/59993844/error-loading-local-data-is-disabled-this-must-be-enabled-on-both-the-client)
+
+  - After searching online, I fixed it by these steps:
+
+    - set the global variables by using this command:
+
+    ```sql
+    mysql> SET GLOBAL local_infile=1;
+    Query OK, 0 rows affected (0.00 sec)
+    ```
+
+    - quit current server:
+
+    ```sql
+    mysql> quit
+    Bye
+    ```
+
+    - connect to the server with local-infile system variable :
+
+    ```sql
+    mysql --local-infile=1 -u root -p1
+    ```
 

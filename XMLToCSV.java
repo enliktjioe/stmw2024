@@ -5,6 +5,7 @@ import java.util.*;
 
 // This Java program reads the XML and converts it into CSV files, adhering to the relational schema we designed. 
 // The CSV files will use a tab delimiter ("\t") and end-of-line character "\n".
+// It's using DOM parsing
 
 public class XMLToCSV {
     public static void main(String[] args) {

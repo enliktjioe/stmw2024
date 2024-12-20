@@ -1,30 +1,30 @@
 USE ad;
 
-LOAD DATA INFILE 'ebay-data-csv/Items.csv' 
+LOAD DATA LOCAL INFILE 'ebay-data-csv/Items.csv' 
 INTO TABLE Items 
 FIELDS TERMINATED BY '\t' 
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE 'ebay-data-csv/ItemCategory.csv' 
+LOAD DATA LOCAL INFILE 'ebay-data-csv/ItemCategory.csv' 
 INTO TABLE ItemCategory 
 FIELDS TERMINATED BY '\t' 
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE 'ebay-data-csv/Bids.csv' 
+LOAD DATA LOCAL INFILE 'ebay-data-csv/Bids.csv' 
 INTO TABLE Bids 
 FIELDS TERMINATED BY '\t' 
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE 'ebay-data-csv/Bidder.csv' 
+LOAD DATA LOCAL INFILE 'ebay-data-csv/Bidder.csv' 
 INTO TABLE Bidder 
 FIELDS TERMINATED BY '\t' 
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA INFILE 'ebay-data-csv/Seller.csv' 
+LOAD DATA LOCAL INFILE 'ebay-data-csv/Seller.csv' 
 INTO TABLE Seller 
 FIELDS TERMINATED BY '\t' 
 LINES TERMINATED BY '\n'

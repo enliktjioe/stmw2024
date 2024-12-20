@@ -12,13 +12,12 @@ mysql < create.sql
 javac XMLToCSV.java
 java XMLToCSV
 
-# # TODO
-# # using batch
-# # java MySAX ../ebay-data/ output/
+# TODO
+# using batch reading
+# java MySAX ../ebay-data/ output/
 
-# # # Run the load.sql batch file to load the data
-# mysql ad < load.sql
+# Run the load.sql batch file to load the data
+mysql --local-infile=1 ad < load.sql
 
-# # Remove all temporary files
-# rm -r ebay-data-csv/
-# ...
+# Remove all temporary files
+rm ebay-data-csv/*
