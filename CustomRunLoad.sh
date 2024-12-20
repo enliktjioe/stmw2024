@@ -57,7 +57,7 @@ printf "\n"
 
 # Remove all temporary files
 echo "Remove all temporary files..."
-rm -r ebay-data-csv
+rm -r "$OUTPUT_DIR"
 echo "All temporary files removed successfully..."
 printf "\n"
 

@@ -5,12 +5,22 @@ Study repository for Uni Bremen course "Search Technology for Media &amp; Web (W
 
 - Open docker container
   `docker start -ai pa1_container`
+
 - Go to directory where the batch file stored
   `cd student_workspace`
+
 - Restart MySQL server inside docker (somehow it's needed to resolve some MySQL server error)
   `service mysql restart`
+
+- Setup local-infile inside MySQL
+  `mysql`
+
+  `SET GLOBAL local_infile=1;`
+  <img src="img/README/image-20241220022348718.png" alt="image-20241220022348718" style="zoom:50%;" />
+
 - Run the bash script
   `./CustomRunLoad.sh`
+
 - Example process:
   <img src="img/README/image-20241220014031100.png" alt="image-20241220014031100" style="zoom:67%;" />
 
