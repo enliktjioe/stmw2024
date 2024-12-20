@@ -7,7 +7,9 @@ Study repository for Uni Bremen course "Search Technology for Media &amp; Web (W
 - Example process:
   <img src="img/README/image-20241220014031100.png" alt="image-20241220014031100" style="zoom:67%;" />
 
+## Current Limitation
 
+- Batch script can only convert
 
 ## Design Relational Schema
 

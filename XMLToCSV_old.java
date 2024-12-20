@@ -7,51 +7,32 @@ import java.util.*;
 // The CSV files will use a tab delimiter ("\t") and end-of-line character "\n".
 // It's using DOM parsing
 
-public class XMLToCSV {
-
+public class XMLToCSV_old {
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Please provide the input XML file path and the output directory path as command line arguments.");
-            return;
-        }
-        
-        String inputFilePath = args[0];
-        String outputDirPath = args[1];
-        
         try {
-            System.out.println("Starting XML to CSV conversion...");
-            File inputFile = new File(inputFilePath);
+            // Load XML document
+            // === Change the XML filepath here ===
+            File inputFile = new File("ebay-data/items-0.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
 
-            parseItems(doc, outputDirPath);
-            System.out.println("Items.csv created.");
-
-            parseItemCategory(doc, outputDirPath);
-            System.out.println("ItemCategory.csv created.");
-
-            parseBids(doc, outputDirPath);
-            System.out.println("Bids.csv created.");
-
-            parseBidder(doc, outputDirPath);
-            System.out.println("Bidder.csv created.");
-
-            parseSeller(doc, outputDirPath);
-            System.out.println("Seller.csv created.");
-
-            System.out.println("XML to CSV conversion completed successfully.");
-
+            // Parse and write to CSV files
+            parseItems(doc);
+            parseItemCategory(doc);
+            parseBids(doc);
+            parseBidder(doc);
+            parseSeller(doc);
+            
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("An error occurred during the XML to CSV conversion.");
         }
     }
 
-    private static void parseItems(Document doc, String outputDirPath) throws IOException {
+    private static void parseItems(Document doc) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Item");
-        FileWriter fw = new FileWriter(outputDirPath + "/Items.csv");
+        FileWriter fw = new FileWriter("ebay-data-csv/Items.csv");
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("ItemID\tName\tCurrently\tBuy_Price\tFirst_Bid\tNumber_of_Bids\tLocation\tCountry\tStarted\tEnds\tDescription\n");
         
@@ -75,9 +56,9 @@ public class XMLToCSV {
         bw.close();
     }
 
-    private static void parseItemCategory(Document doc, String outputDirPath) throws IOException {
+    private static void parseItemCategory(Document doc) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Item");
-        FileWriter fw = new FileWriter(outputDirPath + "/ItemCategory.csv");
+        FileWriter fw = new FileWriter("ebay-data-csv/ItemCategory.csv");
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("ItemID\tCategory\n");
 
@@ -93,27 +74,26 @@ public class XMLToCSV {
         bw.close();
     }
 
-    private static void parseBids(Document doc, String outputDirPath) throws IOException {
+    private static void parseBids(Document doc) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Bid");
-        FileWriter fw = new FileWriter(outputDirPath + "/Bids.csv");
+        FileWriter fw = new FileWriter("ebay-data-csv/Bids.csv");
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("ItemID\tBidderID\tTime\tAmount\n");
 
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
-            String itemID = ((Element)element.getParentNode()).getAttribute("ItemID");
             String bidderID = ((Element)element.getElementsByTagName("Bidder").item(0)).getAttribute("UserID");
             String time = getTagValue("Time", element);
             String amount = getTagValue("Amount", element);
 
-            bw.write(String.format("%s\t%s\t%s\t%s\n", itemID, bidderID, time, amount));
+            bw.write(String.format("%s\t%s\t%s\n", bidderID, time, amount));
         }
         bw.close();
     }
 
-    private static void parseBidder(Document doc, String outputDirPath) throws IOException {
+    private static void parseBidder(Document doc) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Bidder");
-        FileWriter fw = new FileWriter(outputDirPath + "/Bidder.csv");
+        FileWriter fw = new FileWriter("ebay-data-csv/Bidder.csv");
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("UserID\tRating\tLocation\tCountry\n");
 
@@ -134,9 +114,9 @@ public class XMLToCSV {
         bw.close();
     }
 
-    private static void parseSeller(Document doc, String outputDirPath) throws IOException {
+    private static void parseSeller(Document doc) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Seller");
-        FileWriter fw = new FileWriter(outputDirPath + "/Seller.csv");
+        FileWriter fw = new FileWriter("ebay-data-csv/Seller.csv");
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("UserID\tRating\n");
 
