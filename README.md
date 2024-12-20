@@ -1,6 +1,12 @@
 # stmw2024
 Study repository for Uni Bremen course "Search Technology for Media &amp; Web (Winter Semester 2024/2025)"
 
+## How to Run Batch File
+
+- Open docker container and go to directory where the batch file
+- Example process:
+  <img src="img/README/image-20241220014031100.png" alt="image-20241220014031100" style="zoom:67%;" />
+
 
 
 ## Design Relational Schema
