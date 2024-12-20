@@ -7,7 +7,7 @@ import java.util.*;
 // The CSV files will use a tab delimiter ("\t") and end-of-line character "\n".
 // It's using DOM parsing
 
-public class XMLToCSV {
+public class XMLToCSV_old2 {
 
     public static void main(String[] args) {
         if (args.length < 2) {
@@ -51,15 +51,10 @@ public class XMLToCSV {
 
     private static void parseItems(Document doc, String outputDirPath) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Item");
-        File file = new File(outputDirPath + "/Items.csv");
-        boolean isNewFile = !file.exists();
-        FileWriter fw = new FileWriter(file, true);
+        FileWriter fw = new FileWriter(outputDirPath + "/Items.csv");
         BufferedWriter bw = new BufferedWriter(fw);
+        bw.write("ItemID\tName\tCurrently\tBuy_Price\tFirst_Bid\tNumber_of_Bids\tLocation\tCountry\tStarted\tEnds\tDescription\n");
         
-        if (isNewFile) {
-            bw.write("ItemID\tName\tCurrently\tBuy_Price\tFirst_Bid\tNumber_of_Bids\tLocation\tCountry\tStarted\tEnds\tDescription\n");
-        }
-
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
             String itemID = element.getAttribute("ItemID");
@@ -82,14 +77,9 @@ public class XMLToCSV {
 
     private static void parseItemCategory(Document doc, String outputDirPath) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Item");
-        File file = new File(outputDirPath + "/ItemCategory.csv");
-        boolean isNewFile = !file.exists();
-        FileWriter fw = new FileWriter(file, true);
+        FileWriter fw = new FileWriter(outputDirPath + "/ItemCategory.csv");
         BufferedWriter bw = new BufferedWriter(fw);
-        
-        if (isNewFile) {
-            bw.write("ItemID\tCategory\n");
-        }
+        bw.write("ItemID\tCategory\n");
 
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
@@ -105,36 +95,27 @@ public class XMLToCSV {
 
     private static void parseBids(Document doc, String outputDirPath) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Bid");
-        File file = new File(outputDirPath + "/Bids.csv");
-        boolean isNewFile = !file.exists();
-        FileWriter fw = new FileWriter(file, true);
+        FileWriter fw = new FileWriter(outputDirPath + "/Bids.csv");
         BufferedWriter bw = new BufferedWriter(fw);
-        
-        if (isNewFile) {
-            bw.write("BidderID\tTime\tAmount\n");
-        }
+        bw.write("ItemID\tBidderID\tTime\tAmount\n");
 
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
+            String itemID = ((Element)element.getParentNode()).getAttribute("ItemID");
             String bidderID = ((Element)element.getElementsByTagName("Bidder").item(0)).getAttribute("UserID");
             String time = getTagValue("Time", element);
             String amount = getTagValue("Amount", element);
 
-            bw.write(String.format("%s\t%s\t%s\n", bidderID, time, amount));
+            bw.write(String.format("%s\t%s\t%s\t%s\n", itemID, bidderID, time, amount));
         }
         bw.close();
     }
 
     private static void parseBidder(Document doc, String outputDirPath) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Bidder");
-        File file = new File(outputDirPath + "/Bidder.csv");
-        boolean isNewFile = !file.exists();
-        FileWriter fw = new FileWriter(file, true);
+        FileWriter fw = new FileWriter(outputDirPath + "/Bidder.csv");
         BufferedWriter bw = new BufferedWriter(fw);
-        
-        if (isNewFile) {
-            bw.write("UserID\tRating\tLocation\tCountry\n");
-        }
+        bw.write("UserID\tRating\tLocation\tCountry\n");
 
         Set<String> bidders = new HashSet<>();
         for (int i = 0; i < nodeList.getLength(); i++) {
@@ -155,14 +136,9 @@ public class XMLToCSV {
 
     private static void parseSeller(Document doc, String outputDirPath) throws IOException {
         NodeList nodeList = doc.getElementsByTagName("Seller");
-        File file = new File(outputDirPath + "/Seller.csv");
-        boolean isNewFile = !file.exists();
-        FileWriter fw = new FileWriter(file, true);
+        FileWriter fw = new FileWriter(outputDirPath + "/Seller.csv");
         BufferedWriter bw = new BufferedWriter(fw);
-        
-        if (isNewFile) {
-            bw.write("UserID\tRating\n");
-        }
+        bw.write("UserID\tRating\n");
 
         Set<String> sellers = new HashSet<>();
         for (int i = 0; i < nodeList.getLength(); i++) {

@@ -30,12 +30,10 @@ CREATE TABLE Bidder (
 );
 
 CREATE TABLE Bids (
-    ItemID VARCHAR(255),
     BidderID VARCHAR(255),
     Time DATETIME,
     Amount DECIMAL(8, 2),
-    PRIMARY KEY (ItemID, BidderID, Time),
-    FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
+    PRIMARY KEY (BidderID, Time),
     FOREIGN KEY (BidderID) REFERENCES Bidder(UserID)
 );
 
