@@ -81,12 +81,11 @@ public class XMLToCSV {
 
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
-            String itemID = ((Element)element.getParentNode()).getAttribute("ItemID");
             String bidderID = ((Element)element.getElementsByTagName("Bidder").item(0)).getAttribute("UserID");
             String time = getTagValue("Time", element);
             String amount = getTagValue("Amount", element);
 
-            bw.write(String.format("%s\t%s\t%s\t%s\n", itemID, bidderID, time, amount));
+            bw.write(String.format("%s\t%s\t%s\n", bidderID, time, amount));
         }
         bw.close();
     }
