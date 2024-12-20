@@ -26,6 +26,12 @@ Study repository for Uni Bremen course "Search Technology for Media &amp; Web (W
 
 ## 
 
+## Known Limitations
+
+- There is an error in `Bids` table as I missed `itemID` column
+
+
+
 ## Design Relational Schema
 
 ### Step 1: List Your Relations
