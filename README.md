@@ -3,7 +3,14 @@ Study repository for Uni Bremen course "Search Technology for Media &amp; Web (W
 
 ## How to Run Batch File
 
-- Open docker container and go to directory where the batch file
+- Open docker container
+  `docker start -ai pa1_container`
+- Go to directory where the batch file stored
+  `cd student_workspace`
+- Restart MySQL server inside docker (somehow it's needed to resolve some MySQL server error)
+  `service mysql restart`
+- Run the bash script
+  `./CustomRunLoad.sh`
 - Example process:
   <img src="img/README/image-20241220014031100.png" alt="image-20241220014031100" style="zoom:67%;" />
 
