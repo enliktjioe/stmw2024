@@ -1,9 +1,3 @@
-Presentation Guidelines:
-Duration: 7 minutes for the presentation, followed by a 3-minute discussion.
-Content: Focus on what you did and why, outlining how you approached solving the assignment.
-
-
-
 # Search Technology for Media and Web (WiSe 2024/2025) - Programming Assignment 01
 
 Name:
@@ -11,6 +5,10 @@ Enlik Enlik
 
 Date:
 13 January 2025
+
+Presentation Guidelines:
+Duration: 7 minutes for the presentation, followed by a 3-minute discussion.
+Content: Focus on what you did and why, outlining how you approached solving the assignment.
 
 
 
