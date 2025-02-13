@@ -26,3 +26,5 @@ printf "\n"
 # Run the Java program Indexer
 echo "Running Indexer.java"
 java Indexer
+
+# PART C
