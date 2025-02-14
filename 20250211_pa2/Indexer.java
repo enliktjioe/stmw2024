@@ -30,7 +30,7 @@ public class Indexer {
         }
     }
 	
-	public static void insertDoc(IndexWriter i, String itemId, String name, String category, String description, String price){
+	public static void insertDoc(IndexWriter i, String itemId, String name, String category, String description, String price, String latitude, String longitude){
 		Document doc = new Document();
 
 		// Defining fields
@@ -39,6 +39,8 @@ public class Indexer {
 		doc.add(new TextField("category", category, Field.Store.YES));
 		doc.add(new TextField("description", description, Field.Store.YES));
 		doc.add(new TextField("price", price, Field.Store.YES));
+		doc.add(new TextField("latitude", latitude, Field.Store.YES));
+		doc.add(new TextField("longitude", longitude, Field.Store.YES));
 
 		// Add document
 		try { i.addDocument(doc); } catch (Exception e) { e.printStackTrace(); }
@@ -60,7 +62,7 @@ public class Indexer {
 			i.deleteAll();
 
 			// SQL query to execute 
-			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, COALESCE(i.currently, 0) as price FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.itemId, i.name, i.description, i.currently;";
+			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, COALESCE(i.currently, 0) as price, COALESCE(ill.latitude, 0.00) as latitude, COALESCE(ill.longitude, 0.00) as longitude FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId LEFT JOIN ItemLatLon ill ON i.itemId = ill.itemId GROUP BY i.itemId, i.name, i.description, i.currently, ill.latitude, ill.longitude;";
 			// String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.itemId, i.name, i.description;";
 			System.out.println("Query: " + query);
 			System.out.println("");
@@ -78,13 +80,15 @@ public class Indexer {
 					String categories = rs.getString("categories");
 					String description = rs.getString("description");
 					String price = rs.getString("price");
+					String latitude = rs.getString("latitude");
+					String longitude = rs.getString("longitude");
  					
 					// debug
-					// System.out.println("itemId: " + itemId + ", name: " + name + ", categories: " + categories + ", description: " + description + ", pricen: " + price);
+					// System.out.println("itemId: " + itemId + ", name: " + name + ", categories: " + categories + ", description: " + description + ", price: " + price);
 					// System.out.println("");
 
 					// Add documents to index
-					insertDoc(i, itemId, name, categories, description, price);
+					insertDoc(i, itemId, name, categories, description, price, latitude, longitude);
 				}
 
 			} catch (SQLException e) {
