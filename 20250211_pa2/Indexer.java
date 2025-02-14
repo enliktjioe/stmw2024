@@ -30,13 +30,15 @@ public class Indexer {
         }
     }
 	
-	public static void insertDoc(IndexWriter i, String name, String category, String description){
+	public static void insertDoc(IndexWriter i, String itemId, String name, String category, String description, String price){
 		Document doc = new Document();
 
 		// Defining fields
+		doc.add(new TextField("itemId", itemId, Field.Store.YES));
 		doc.add(new TextField("name", name, Field.Store.YES));
 		doc.add(new TextField("category", category, Field.Store.YES));
 		doc.add(new TextField("description", description, Field.Store.YES));
+		doc.add(new TextField("price", price, Field.Store.YES));
 
 		// Add document
 		try { i.addDocument(doc); } catch (Exception e) { e.printStackTrace(); }
@@ -58,7 +60,8 @@ public class Indexer {
 			i.deleteAll();
 
 			// SQL query to execute 
-			String query = "SELECT i.name, GROUP_CONCAT(c.category SEPARATOR ', ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.name, i.description;";
+			// String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.itemId, i.name, i.description;";
+			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, bp.BuyPrice as price FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId INNER JOIN BuyPrice bp ON i.itemId = bp.itemId GROUP BY i.itemId, i.name, i.description, bp.BuyPrice LIMIT 2;";
 			System.out.println("Query: " + query);
 			System.out.println("");
 
@@ -70,16 +73,18 @@ public class Indexer {
 				// Process and print the results
 				while (rs.next()) {
 					// Get UserId and UserName attributes from the table
+					String itemId = rs.getString("itemId");
 					String name = rs.getString("name");
 					String categories = rs.getString("categories");
 					String description = rs.getString("description");
+					String price = rs.getString("price");
  					
 					// debug
-					// System.out.println("name: " + name + ", categories: " + categories + ", description: " + description);
-					// System.out.println("");
+					System.out.println("itemId: " + itemId + ", name: " + name + ", categories: " + categories + ", description: " + description + ", pricen: " + price);
+					System.out.println("");
 
 					// Add documents to index
-					insertDoc(i, name, categories, description);
+					insertDoc(i, itemId, name, categories, description, price);
 				}
 
 			} catch (SQLException e) {
