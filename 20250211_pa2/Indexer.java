@@ -58,11 +58,7 @@ public class Indexer {
 			i.deleteAll();
 
 			// SQL query to execute 
-			// String query = "SELECT a.name, GROUP_CONCAT(b.category SEPARATOR ', ') AS categories, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) GROUP BY a.name, a.description LIMIT 10;";
-			// String query = "SELECT name, CONCAT(category SEPARATOR ' ') AS categories, description from (SELECT a.name, b.category, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) LIMIT 10) c GROUP BY name, description;";
-			// String query = "SELECT a.name, b.category, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) LIMIT 10;";
-			// String query = "SELECT a.name, GROUP_CONCAT(b.category) as combinedCategories, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) where name = 'christopher radko' group by a.name, a.description LIMIT 10;";
-			String query = "SELECT i.name, GROUP_CONCAT(c.category SEPARATOR ', ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.name, i.description LIMIT 2;";
+			String query = "SELECT i.name, GROUP_CONCAT(c.category SEPARATOR ', ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.name, i.description;";
 			System.out.println("Query: " + query);
 			System.out.println("");
 
@@ -79,8 +75,8 @@ public class Indexer {
 					String description = rs.getString("description");
  					
 					// debug
-					System.out.println("name: " + name + ", categories: " + categories + ", description: " + description);
-					System.out.println("");
+					// System.out.println("name: " + name + ", categories: " + categories + ", description: " + description);
+					// System.out.println("");
 
 					// Add documents to index
 					insertDoc(i, name, categories, description);
