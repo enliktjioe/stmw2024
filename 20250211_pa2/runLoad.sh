@@ -26,11 +26,11 @@ printf "\n"
 # Run indexer (permitting restricted native access features and enable optimization via vectorization (optional parameters))
 java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Indexer
 
-# Compile searcher
-javac Searcher.java
+# # Compile searcher
+# javac Searcher.java
 
-# Run searcher (permitting restricted native access features and enable optimization via vectorization (optional parameters))
-java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "the keeper" 10
+# # Run searcher (permitting restricted native access features and enable optimization via vectorization (optional parameters))
+# java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "the keeper" 10
 
 
 # PART C

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.sql.*;
 
 public class Indexer {
     public static void main(String[] args) throws IOException {
@@ -29,12 +30,13 @@ public class Indexer {
         }
     }
 	
-	public static void insertDoc(IndexWriter i, String doc_id, String line){
+	public static void insertDoc(IndexWriter i, String name, String category, String description){
 		Document doc = new Document();
 
 		// Defining fields
-		doc.add(new TextField("doc_id", doc_id, Field.Store.YES));
-		doc.add(new TextField("line", line, Field.Store.YES));
+		doc.add(new TextField("name", name, Field.Store.YES));
+		doc.add(new TextField("category", category, Field.Store.YES));
+		doc.add(new TextField("description", description, Field.Store.YES));
 
 		// Add document
 		try { i.addDocument(doc); } catch (Exception e) { e.printStackTrace(); }
@@ -54,15 +56,41 @@ public class Indexer {
 			
 			// Clear existing index
 			i.deleteAll();
+
+			// SQL query to execute 
+			// String query = "SELECT a.name, GROUP_CONCAT(b.category SEPARATOR ', ') AS categories, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) GROUP BY a.name, a.description LIMIT 10;";
+			// String query = "SELECT name, CONCAT(category SEPARATOR ' ') AS categories, description from (SELECT a.name, b.category, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) LIMIT 10) c GROUP BY name, description;";
+			// String query = "SELECT a.name, b.category, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) LIMIT 10;";
+			// String query = "SELECT a.name, GROUP_CONCAT(b.category) as combinedCategories, a.description from Items a INNER JOIN Categories b ON (a.ItemId = b.ItemId) where name = 'christopher radko' group by a.name, a.description LIMIT 10;";
+			String query = "SELECT i.name, GROUP_CONCAT(c.category SEPARATOR ', ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.name, i.description LIMIT 2;";
+			System.out.println("Query: " + query);
+			System.out.println("");
+
+			// Establish the connection using the DbManager
+			try (Connection conn = DbManager.getConnection(true); // Read-only connection
+					Statement stmt = conn.createStatement(); // Statement to execute the query     
+					ResultSet rs = stmt.executeQuery(query)) {  // Execute query
+
+				// Process and print the results
+				while (rs.next()) {
+					// Get UserId and UserName attributes from the table
+					String name = rs.getString("name");
+					String categories = rs.getString("categories");
+					String description = rs.getString("description");
+ 					
+					// debug
+					System.out.println("name: " + name + ", categories: " + categories + ", description: " + description);
+					System.out.println("");
+
+					// Add documents to index
+					insertDoc(i, name, categories, description);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			
-			// Add documents to index
-			insertDoc(i, "1", "The old night keeper keeps the keep in the town");
-			insertDoc(i, "2", "In the big old house in the big old gown.");
-			insertDoc(i, "3", "The house in the town had the big old keep");
-			insertDoc(i, "4", "Where the old night keeper never did sleep.");
-			insertDoc(i, "5", "The night keeper keeps the keep in the night");
-			insertDoc(i, "6", "And keeps in the dark and sleeps in the light.");
-			insertDoc(i, "7", "The keeper of the light.");
+
 
 			//Close writer
 			i.close();
