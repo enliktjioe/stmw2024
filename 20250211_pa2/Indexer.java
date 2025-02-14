@@ -62,6 +62,7 @@ public class Indexer {
 			insertDoc(i, "4", "Where the old night keeper never did sleep.");
 			insertDoc(i, "5", "The night keeper keeps the keep in the night");
 			insertDoc(i, "6", "And keeps in the dark and sleeps in the light.");
+			insertDoc(i, "7", "The keeper of the light.");
 
 			//Close writer
 			i.close();

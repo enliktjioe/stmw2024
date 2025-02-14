@@ -1,7 +1,7 @@
 USE ad;
 
 -- Drop the spatial index
-DROP INDEX IF EXISTS idx_location ON GeoCoordinates;
+ALTER TABLE GeoCoordinates DROP INDEX idx_location;
 
 -- Drop the table
 DROP TABLE IF EXISTS GeoCoordinates;
