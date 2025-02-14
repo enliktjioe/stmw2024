@@ -1,7 +1,8 @@
 import java.io.*;
 import java.nio.file.*;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import java.util.*;
 
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -91,30 +92,40 @@ public class Searcher {
             System.out.println("Number of hits: " + topDocs.totalHits.value());
             System.out.println("#----------------------------------------#");
 
-            // Iterate over results and print them
+            // Collect results
+            List<Document> results = new ArrayList<>();
             StoredFields storedFields = indexSearcher.storedFields();
             for (ScoreDoc hit : topDocs.scoreDocs) {
-                Document doc = storedFields.document(hit.doc); // Get document from hit
-                Explanation explanation = indexSearcher.explain(query, hit.doc);
+                Document doc = storedFields.document(hit.doc);
+                doc.add(new StoredField("score", hit.score));
+                results.add(doc);
+            }
 
-                // If geo-location search is enabled, filter results based on distance
+            // Sort results
+            if (geoSearch) { // geoSearch order = Lucene-score descending, distance ascending, ascending price
+                results.sort(Comparator.comparingDouble((Document doc) -> doc.getField("score").numericValue().doubleValue()).reversed()
+                    .thenComparingDouble(doc -> {
+                        double docLongitude = Double.parseDouble(doc.get("longitude"));
+                        double docLatitude = Double.parseDouble(doc.get("latitude"));
+                        return haversineDistance(latitude, longitude, docLatitude, docLongitude);})
+                    .thenComparingDouble(doc -> Double.parseDouble(doc.get("price"))));
+            } else { // without geoSearch order = Lucene-score descending, ascending price
+                results.sort(Comparator.comparingDouble((Document doc) -> doc.getField("score").numericValue().doubleValue()).reversed()
+                  .thenComparingDouble(doc -> Double.parseDouble(doc.get("price"))));
+            }
+
+            // Print results
+            for (Document doc : results) {
                 if (geoSearch) {
-                    // double docLongitude = Double.parseDouble(doc.get("longitude"));
-                    // double docLatitude = Double.parseDouble(doc.get("latitude"));
-                    String docLongitudeStr = doc.get("longitude");
-                    String docLatitudeStr = doc.get("latitude");
-                    double docLongitude = Double.parseDouble(docLongitudeStr);
-                    double docLatitude = Double.parseDouble(docLatitudeStr);
+                    double docLongitude = Double.parseDouble(doc.get("longitude"));
+                    double docLatitude = Double.parseDouble(doc.get("latitude"));
                     double distance = haversineDistance(latitude, longitude, docLatitude, docLongitude);
-                    // double distance = vincentyDistance(latitude, longitude, docLatitude, docLongitude);
-                    
-                    System.out.println("itemId: " + doc.get("itemId") + ", name: " + doc.get("name") + ", score: " + hit.score + ", distance: " + distance + " km" + ", price: " + doc.get("price"));
-                    // System.out.println("Explanation: " + explanation.toString());
+                    System.out.println("itemId: " + doc.get("itemId") + ", name: " + doc.get("name") + ", score: " + doc.getField("score").numericValue().doubleValue() + ", distance: " + distance + " km, price: " + doc.get("price"));
                 } else {
-                    System.out.println("itemId: " + doc.get("itemId") + ", name: " + doc.get("name") + ", score: " + hit.score + ", price: " + doc.get("price"));
-                    // System.out.println("Explanation: " + explanation.toString());
+                    System.out.println("itemId: " + doc.get("itemId") + ", name: " + doc.get("name") + ", score: " + doc.getField("score").numericValue().doubleValue() + ", price: " + doc.get("price"));
                 }
             }
+
             indexReader.close();
             directory.close();
         } catch (Exception e) {
