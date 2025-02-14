@@ -60,8 +60,7 @@ public class Indexer {
 			i.deleteAll();
 
 			// SQL query to execute 
-			// String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.itemId, i.name, i.description;";
-			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, bp.BuyPrice as price FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId INNER JOIN BuyPrice bp ON i.itemId = bp.itemId GROUP BY i.itemId, i.name, i.description, bp.BuyPrice LIMIT 2;";
+			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, bp.BuyPrice as price FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId INNER JOIN BuyPrice bp ON i.itemId = bp.itemId GROUP BY i.itemId, i.name, i.description, bp.BuyPrice;";
 			System.out.println("Query: " + query);
 			System.out.println("");
 
@@ -80,8 +79,8 @@ public class Indexer {
 					String price = rs.getString("price");
  					
 					// debug
-					System.out.println("itemId: " + itemId + ", name: " + name + ", categories: " + categories + ", description: " + description + ", pricen: " + price);
-					System.out.println("");
+					// System.out.println("itemId: " + itemId + ", name: " + name + ", categories: " + categories + ", description: " + description + ", pricen: " + price);
+					// System.out.println("");
 
 					// Add documents to index
 					insertDoc(i, itemId, name, categories, description, price);

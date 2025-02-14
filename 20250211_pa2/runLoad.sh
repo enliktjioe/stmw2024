@@ -25,16 +25,16 @@ printf "\n"
 
 # Run indexer (permitting restricted native access features and enable optimization via vectorization (optional parameters))
 java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Indexer
+printf "\n"
 
 # Part C: Implement the Search Function
 
 # Compile searcher
 javac Searcher.java
+printf "\n"
 
 # Run searcher (permitting restricted native access features and enable optimization via vectorization (optional parameters))
 # java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "HTML" 10
 java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "Marvel" 10
 java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "money" 10
-
-
-# PART C
+printf "\n"

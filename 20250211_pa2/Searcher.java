@@ -1,13 +1,6 @@
 import java.io.*;
 import java.nio.file.*;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.search.*;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
@@ -40,6 +33,7 @@ public class Searcher {
                 int numResults = Integer.parseInt(args[1]);
                 // First argument is the search query
                 String searchQuery = args[0];
+                System.out.println("");
                 System.out.println("Searching for: " + searchQuery);
 
                 // Search index in the specified fields for the query and return a defined maximum number of results
@@ -80,9 +74,7 @@ public class Searcher {
                 Document doc = storedFields.document(hit.doc); // Get document from hit
                 Explanation explanation = indexSearcher.explain(query, hit.doc);
 
-                // System.out.println("doc_id: " + doc.get("doc_id") + ", score: " + hit.score + " [" + doc.get("name") + "]");
                 System.out.println("ItemId: " + doc.get("itemId") + ", Name: " + doc.get("name") + ", score: " + hit.score + ", price: " + doc.get("price"));
-                // System.out.println("Explanation: " + explanation.toString()); // debug
             }
             indexReader.close();
             directory.close();
