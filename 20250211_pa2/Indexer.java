@@ -60,7 +60,8 @@ public class Indexer {
 			i.deleteAll();
 
 			// SQL query to execute 
-			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, bp.BuyPrice as price FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId INNER JOIN BuyPrice bp ON i.itemId = bp.itemId GROUP BY i.itemId, i.name, i.description, bp.BuyPrice;";
+			String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description, COALESCE(i.currently, 0) as price FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.itemId, i.name, i.description, i.currently;";
+			// String query = "SELECT i.itemId, i.name, GROUP_CONCAT(c.category SEPARATOR '; ') AS categories, i.description FROM Items i INNER JOIN Categories c ON i.itemId = c.itemId GROUP BY i.itemId, i.name, i.description;";
 			System.out.println("Query: " + query);
 			System.out.println("");
 
