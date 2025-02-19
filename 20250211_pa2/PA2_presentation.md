@@ -98,14 +98,19 @@ Content: Focus on what you did and why, outlining how you approached solving the
       java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "Marvel" 5
       ```
    
+      ​	![image-20250219103136078](img/PA2_presentation/image-20250219103136078.png)
+      
       - With geo-location data
+      
         ```bash
         java --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector Searcher "Marvel" 5 -x 40.84987900 -y -73.97501000 -w 100
-        
         ```
+      
    
-        
-   
+
+​			![image-20250219103221015](img/PA2_presentation/image-20250219103221015.png)
+
+
 
 ## Known Issues
 
